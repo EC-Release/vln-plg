@@ -186,7 +186,7 @@ func main(){
 	
 	util.Branding(bc)
 
-	util.Init("vlan","0",true)
+	util.Init("vlan",true)
 
 	t,err:=GetVLANSetting()
 	if err!=nil{
