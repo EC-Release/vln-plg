@@ -163,9 +163,7 @@ func main(){
 		}
 	}()
 
-	util.Branding("/.ec","ec-plugin","ec-config","Authorization","EC_HTTP_HEADER","EC","EC_LOGO","COPY_RIGHT","https://ca-not-in-use.com","EC")
-
-		bc:=&util.BrandingConfig{
+	bc:=&util.BrandingConfig{
 		CONFIG_MAIN: "/.ec",
 		BRAND_CONFIG: "EC", 
 		LOGO: EC_LOGO,
