@@ -18,6 +18,7 @@ import (
 	"net"
 	"strings"
 	util "github.com/wzlib/wzutil"
+	model "github.com/wzlib/wzschema"
 	"flag"
 	"github.com/vishvananda/netlink"
 	"gopkg.in/yaml.v2"
@@ -161,10 +162,11 @@ func main(){
 			util.InfoLog("plugin undeployed.")
 		}
 	}()
-
-	bc:=&util.BrandingConfig{
+	
+	bc:=&model.BrandingConfig{
 		CONFIG_MAIN: "/.ec",
-		BRAND_CONFIG: "EC", 
+		BRAND_CONFIG: "EC",
+		ART_NAME: "agent",
 		LOGO: EC_LOGO,
 		COPY_RIGHT: COPY_RIGHT,
 		HEADER_PLUGIN: "ec-plugin",
