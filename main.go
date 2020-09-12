@@ -43,10 +43,10 @@ const (
           ▐░▌          ▐░▌
           ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ 
           ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
-           ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  @Digital Connect 
+           ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  @Enterprise-Connect 
 `
-	COPY_RIGHT = "Digital Connect,  @GE Corporate"
-	ISSUE_TRACKER = "https://github.com/Enterprise-connect/sdk/issues"
+	COPY_RIGHT = "Enterprise-Connect,  @General Electric"
+	ISSUE_TRACKER = "https://github.com/EC-Release/sdk/issues"
 
 
 	//agent authorization header
@@ -65,9 +65,11 @@ const (
 	//forwarding header targeting a watcher environement
 	EC_INS_HEADER  = "X-EC-APP-INSTANCE"
 
+	//deprecated
 	//xcalr url
 	CA_URL = "https://xcalr.apps.ge.com/v2beta"
 
+	//deprecated
 	//watcher url
 	WATCHER_URL = "https://raw.githubusercontent.com/Enterprise-connect/sdk/v1.1beta.watcher/watcher.yml"
 
