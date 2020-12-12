@@ -18,6 +18,7 @@ import (
 	"net"
 	"strings"
 	util "github.com/wzlib/wzutil"
+	model "github.com/wzlib/wzschema"
 	"flag"
 	"github.com/vishvananda/netlink"
 	"gopkg.in/yaml.v2"
@@ -28,7 +29,62 @@ import (
 var (
 	//YML_VLAN_FLAG = "vlan"
 	REV string= "beta"
+	log *util.AppLog
 )
+
+const (
+	EC_LOGO = `
+           ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄
+          ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+          ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀
+          ▐░▌          ▐░▌   
+          ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌
+          ▐░░░░░░░░░░░▌▐░▌
+          ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌
+          ▐░▌          ▐░▌
+          ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ 
+          ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+           ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  @Enterprise-Connect 
+`
+	COPY_RIGHT = "Enterprise-Connect,  @General Electric"
+	ISSUE_TRACKER = "https://github.com/EC-Release/sdk/issues"
+
+	AUTH_HEADER = "Authorization"
+
+	EC_SUB_HEADER  = "Predix-Zone-Id"
+
+	CF_INS_IDX_EV  = "CF_INSTANCE_INDEX"
+	CF_INS_HEADER  = "X-CF-APP-INSTANCE"
+	EC_INS_IDX_EV  = "EC_INSTANCE_INDEX"
+	EC_INS_HEADER  = "X-EC-APP-INSTANCE"
+
+	CA_URL = "https://github.com/EC-Release/certifactory"
+)
+
+func init(){
+	bc:=&model.BrandingConfig{
+		CONFIG_MAIN: "/.ec",
+		BRAND_CONFIG: "EC",
+		PASSPHRASE_EXT: "PPS",
+		ART_NAME: "agent",
+		LOGO: EC_LOGO,
+		COPY_RIGHT: COPY_RIGHT,
+		HEADER_PLUGIN: "ec-plugin",
+		HEADER_CONFIG: "ec-config",
+		STREAM_PATH: "/agent",
+		HEADER_AUTH: AUTH_HEADER,
+		HEADER_SUB_ID: EC_SUB_HEADER,
+		HEADER_CF_INST: CF_INS_HEADER,
+		HEADER_INST: EC_INS_HEADER,
+		ENV_CF_INST_IDX: CF_INS_IDX_EV,
+		ENV_INST_IDX: EC_INS_IDX_EV,
+		URL_CA: CA_URL,
+		URL_ISSUE_TRACKER: ISSUE_TRACKER,
+	}
+	
+	util.Branding(bc)
+	log = util.NewAppLog("vlan")
+}
 
 type IPRoute struct {}
 
@@ -54,7 +110,7 @@ func (i *IPRoute)RegisterCidrList(ips []string) error {
 			for _,ip := range ips {
 				ip=strings.Trim(ip," ")
 
-				util.InfoLog("[VLAN] ip: "+ip)
+				log.InfoLog("[VLAN] ip: "+ip)
 
 				addr, e := netlink.ParseAddr(ip)
 				if e!=nil{
@@ -66,7 +122,7 @@ func (i *IPRoute)RegisterCidrList(ips []string) error {
 					return e2
 				}
 
-				util.InfoLog("[VLAN] Cidr address "+ip+" has been added/replaced in loopback interface.")
+				log.InfoLog("[VLAN] Cidr address "+ip+" has been added/replaced in loopback interface.")
 
 			}
 
@@ -85,15 +141,15 @@ func GetVLANSetting()(map[string]interface{}, error){
 	flag.Parse()
 	
 	if *ver {
-		util.InfoLog("Rev:"+REV)
+		log.InfoLog("Rev:"+REV)
 		os.Exit(0)
 		return nil,nil
 	}
 
-	util.InfoLog(*plg)
+	log.InfoLog(*plg)
 	f, err := base64.StdEncoding.DecodeString(*plg)
 	if err!=nil{
-		util.InfoLog(err)
+		log.InfoLog(err)
 	}
 	t:=make(map[string]interface{})
 	err=yaml.Unmarshal(f, &t)
@@ -115,18 +171,15 @@ func main(){
 		if r:=recover();r!=nil{
 			util.PanicRecovery(r)
 		} else {
-			util.InfoLog("plugin undeployed.")
+			log.InfoLog("plugin undeployed.")
 		}
 	}()
-
-	util.Branding("/.ec","ec-plugin","ec-config","TC_HEADER","EC","EC_LOGO","COPY_RIGHT","https://ca-not-in-use.com","EC")
-	util.Init("vlan",true)
 
 	t,err:=GetVLANSetting()
 	if err!=nil{
 		panic(err)
 	}
-	util.DbgLog(t)
+	log.DbgLog(t)
 	
         ipr:=&IPRoute{}
 	_ips:=strings.Split(t["ips"].(string),",")

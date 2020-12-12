@@ -7,7 +7,7 @@
  * with the terms and conditions stipulated in the agreement/contract
  * under which the software has been supplied.
  *
- * author: chia.chang@ge.com
+ * author: apolo.yasuda@ge.com
  */
 
 package main
@@ -27,7 +27,7 @@ func TestIPRoute_RegisterCidrList(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -45,7 +45,7 @@ func TestGetVLANSetting(t *testing.T) {
 		want    map[string]interface{}
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -65,9 +65,9 @@ func Test_main(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
-	for range tests {
+	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			main()
 		})
